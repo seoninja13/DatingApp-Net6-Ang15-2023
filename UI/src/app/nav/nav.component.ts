@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { AccountService } from '../_Services/account.service';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-nav',
@@ -9,7 +11,7 @@ import { AccountService } from '../_Services/account.service';
 export class NavComponent {
   datingModel: any = {};
 
-  constructor(public accountService: AccountService) {}
+  constructor(public accountService: AccountService, private router: Router, private toastr: ToastrService) {}
 
   ngOnInit(): void {
     console.log('===> nav.component.ts - ngOnInit() ');
@@ -17,21 +19,14 @@ export class NavComponent {
 
   public login() {
     this.accountService.login(this.datingModel).subscribe({
-      next: (response) => {
-        console.log('response is: ', response);
-      },
-      error: (error) => {
-        console.log('Error: ', error);
-      },
-      complete: () => {
-        console.log('Completed: ');
-      },
+      next: () => this.router.navigateByUrl("/members"),
+      error: (error) => this.toastr.error(error.error),
+      complete: () => console.log('Completed: ')
     });
-
-    console.log(this.datingModel);
   }
 
   public logout() {
     this.accountService.logout();
+    this.router.navigateByUrl("/")
   }
 }
