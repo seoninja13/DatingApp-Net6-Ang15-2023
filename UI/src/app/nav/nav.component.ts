@@ -20,7 +20,6 @@ export class NavComponent {
   public login() {
     this.accountService.login(this.datingModel).subscribe({
       next: () => this.router.navigateByUrl("/members"),
-      error: (error) => this.toastr.error(error.error),
       complete: () => console.log('Completed: ')
     });
   }
